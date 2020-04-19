@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block head %}
+  <script src="{{ url_for('static', filename='channels.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+  Channels
+{% endblock %}
+
+{% block body %}
+
+  <!-- display channels as unordered lists -->
+  <h1>Channels {{ channel_id }}</h1>
+    <ul id="channels">
+      {% if channels: %}
+        {% for channel in channels: %}
+          <li><a href="/channel/{{channel}}">{{ channel }}</a></li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+
+  <!-- Form to create channel to be submitted via ajax -->
+  <div class="col-sm-3 my-1">
+    <form id="form">
+      <input id="new-channel" autocomplete="off" class="form-control" autofocus placeholder="New Channel" type="text">
+      <button type="submit" class="btn btn-primary">create new channel</button>
+    </form>
+  </div>
+
+{% endblock %}

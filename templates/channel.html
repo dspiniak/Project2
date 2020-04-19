@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block head %}
+  <script src="{{ url_for('static', filename='channel.js') }}"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='redirect_channel.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+  Channel {{ channel_id }}
+{% endblock %}
+
+
+{% block body %}
+
+  <!-- display datetime, username, and messages -->
+  <h1>Channel <span id="channel-id">{{ channel_id }}</span></h1>
+  <p></p>
+  <body>
+      <div id="messages" class="messages">
+        {% if messages: %}
+          {% for message in messages: %}
+            <div id="message" class="message">
+              <b>{{ message["time"] }}</b> | <b>{{ message["username"] }}: </b> {{ message["text"] }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="col-sm-3 my-1">
+        <form id="form">
+          <input id="new-message" class="form-control" autocomplete="off" autofocus placeholder="Type new message" type="text">
+        <button type="submit" class="btn btn-primary">send message</button>
+        </form>
+      </div>
+
+  </body>
+
+{% endblock %}
