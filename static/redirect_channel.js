@@ -17,11 +17,3 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 });
-
-
-
-  // if user hasn't entered a page yet, set the first page he was in
-  // if (!localStorage.getItem('last_page'))
-  //   localStorage.setItem('last_page', document.title);
-
-  // if user entered

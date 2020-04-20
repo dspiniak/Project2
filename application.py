@@ -20,18 +20,16 @@ Session(app)
 users = {}
 channels = []
 messages = defaultdict(list)
-pressed_button = "FALSE"
-
+message_counter = 0
 
 """ MANAGE CHANNELS """
 @app.route("/", methods=["GET", "POST"])
 @login_required
-def index(pressed_button="FALSE"):
+def index():
 
-    # get channel via POST
     if request.method == "GET":
 
-        # check were is user coming from (if closed browser)
+        # check where is user coming from (if closed browser)
         if not session.get("user_id") or not session.get("last_page"):
             session["last_page"] = "/"
             print("1")
@@ -48,7 +46,6 @@ def index(pressed_button="FALSE"):
     else:
         print('4')
         session["last_page"] = "/"
-        pressed_button = request.form.get("pressed_button")
         return redirect("/"), 302
 
 
@@ -94,10 +91,25 @@ def view_channel(channel_id):
 
 
 @app.route("/load_messages", methods=["POST"])
-@login_required
-def load_messages(channel_id):
+def load_messages():
+    # get channel_id via POST
+    channel_id = request.form.get("channel_id")
     this_channel_messages = messages[str(channel_id)]
     return jsonify({"success": True, "messages": this_channel_messages})
+
+
+@app.route("/delete_message", methods=["POST"])
+def delete_message():
+    channel_id = str(request.form.get("channel_id"))
+    message_id = request.form.get("message_id")
+
+    # find message and delete it
+    for i in range(len(messages[channel_id])):
+        if str(messages[channel_id][i]['id']) == message_id:
+            del messages[channel_id][i]
+            return jsonify({"success": True})
+
+    return jsonify({"success": False})
 
 
 @socketio.on("submit message")
@@ -108,11 +120,16 @@ def message(data):
     time = data["time"]
     message = data["message"]
 
+    global message_counter
+    message_id = message_counter
+
     # Save message in server
-    messages[channel_id].append({"time": time,
+    messages[channel_id].append({"id": message_id,
+                                 "time": time,
                                  "username": username,
                                  "text": message
                                  })
+    message_counter += 1
 
     # Delete if there are >= 100 messages
     while len(messages[channel_id]) > 100:
@@ -120,9 +137,10 @@ def message(data):
 
     # send message to all users
     emit("send message",
-         {"time": time,
+         {"id": message_id,
+          "time": time,
           "username": username,
-          "message": message},
+          "text": message},
          broadcast=True)
 
 

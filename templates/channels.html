@@ -21,11 +21,13 @@
     </ul>
 
   <!-- Form to create channel to be submitted via ajax -->
-  <div class="col-sm-3 my-1">
-    <form id="form">
-      <input id="new-channel" autocomplete="off" class="form-control" autofocus placeholder="New Channel" type="text">
-      <button type="submit" class="btn btn-primary">create new channel</button>
-    </form>
-  </div>
+
+  <form id="form" class="form-inline">
+    <div class="mx-sm-3 mb-2">
+      <input id="new-channel" class="form-control" autocomplete="off" autofocus placeholder="New Channel" type="text">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">create new channel</button>
+  </form>
+
 
 {% endblock %}

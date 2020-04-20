@@ -18,21 +18,16 @@
   <p></p>
   <body>
       <div id="messages" class="messages">
-        {% if messages: %}
-          {% for message in messages: %}
-            <div id="message" class="message">
-              <b>{{ message["time"] }}</b> | <b>{{ message["username"] }}: </b> {{ message["text"] }}
-            </div>
-          {% endfor %}
-        {% endif %}
       </div>
 
-      <div class="col-sm-3 my-1">
-        <form id="form">
+      <br>
+
+      <form id="form" class="form-inline">
+        <div class="mx-sm-3 mb-2">
           <input id="new-message" class="form-control" autocomplete="off" autofocus placeholder="Type new message" type="text">
-        <button type="submit" class="btn btn-primary">send message</button>
-        </form>
-      </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">send message</button>
+      </form>
 
   </body>
 
